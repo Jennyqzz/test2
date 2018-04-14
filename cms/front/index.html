@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic Layout - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="./themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="./themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="./demo.css">
+	
+</head>
+<body>
+	<!-- <textarea name="content" class="xheditor">test</textarea> -->
+	<div class="easyui-layout" data-options="fit:true">
+	<h1 style="border:0; position: relative;z-index:99999;margin:6px 0 0 10px">信息管理后台</h1>	
+		<div data-options="region:'north'" style="height:50px"></div>
+		<div data-options="region:'south',split:true" style="height:50px;"></div>
+		<div data-options="region:'west',split:true" title="菜单栏" style="width:266px;">
+				<div id="aa" class="easyui-accordion" style="width:100%;height:100%;border:0">
+					<div title="新闻管理" style="padding:10px;">
+						<ul class="easyui-tree wu-side-tree1111">
+							<li iconCls="icon-chart-organisation">
+								<a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="./news.html">
+									新闻管理
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div title="用户管理" style="padding:10px;">
+						<ul class="easyui-tree wu-side-tree">
+							<li iconCls="icon-chart-organisation">
+								<a href="javascript:void(0)" data-icon="icon-chart-organisation">
+									用户管理
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div title="产品管理" style="padding:10px;">
+						<ul class="easyui-tree wu-side-tree11">
+							<li iconCls="icon-chart-organisation">
+								<a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="./user.html">
+									产品管理
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div title="分类管理" style="padding:10px;">
+						<ul class="easyui-tree wu-side-tree111">
+							<li iconCls="icon-chart-organisation">
+								<a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="./news.1.html">
+									新闻模块
+								</a>
+							</li>
+							<li iconCls="icon-chart-organisation">
+								<a href="javascript:void(0)" data-icon="icon-chart-organisation" data-link="./user.1.html">
+									产品模块
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+		</div>
+		<div id="win">	</div>
+		<div data-options="region:'center',title:'详细信息',iconCls:'icon-ok'">
+			<div id="tt1" class="easyui-tabs" data-options="fit:true">
+				<div title="首页" data-options="href:'./component/user.html'"></div>
+			</div>
+		</div>
+	</div>
+    <script type="text/javascript" src="./jquery.min.js"></script>
+	<script type="text/javascript" src="./jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="./javascript/xheditor/xheditor-1.2.2.min.js"></script>
+    <script type="text/javascript" src="./javascript/xheditor/xheditor_lang/zh-cn.js"></script>
+	<script>
+	//新闻  新闻 新闻 新闻 新闻 新闻
+
+	//手风琴  手风琴 
+	//(function($){
+		/* $(function(){
+			$('#tt').tree({
+			url:'http://10.31.154.14:3000/news/list/1',
+			method:'post',
+			onClick: function(data){
+				var num111=data._id;
+				var	jjj222=`<table id="${num111}" title="新闻信息" style="width:700px;height:350px"
+						data-options="rownumbers:true,singleSelect:true,pagination:true,method:'post'">
+					</table>`
+				var title = data.text;
+					
+				$.ajax({
+					url:'http://10.31.154.14:3000/con/list',
+					type:"post",
+					data:{cateId:data._id}
+				}).done(function(dt){
+					addTab1(title,jjj222);   
+					bbbbb222(num111);
+					$('#'+num111).datagrid('loadData',dt);
+				})
+					
+				}
+			});
+		});
+		$('#aa').accordion({
+			animate:true
+		});
+		
+		//新闻模块封装 新闻模块封装
+		function addTab1(title,jjj222) {
+			var content = jjj222;
+			var tabPanel = $("#tt1");
+			title = title.trim();
+			if (!tabPanel.tabs('exists', title)) {
+				tabPanel.tabs('add', {
+					title: title,
+					content: content,
+					fit: true,
+					closable: true
+				})
+			}else{
+				$('#tt1').tabs('select', title);
+		        var selTab = $('#tt1').tabs('getSelected');
+		        var url = $(selTab.panel('options').content).attr('src');     
+		        $('#tt1').tabs('update', {
+		            tab: selTab,
+		            options: {
+		                content:content
+		            }
+		        })
+			}
+			
+		};
+
+		function deleteData11(id){
+			console.log("http://"+id)
+			var ssid=$(this).parents('.easyui-fluid').eq(0).find('table').eq(4).attr('id');
+
+			$.messager.confirm('确认删除', '你确认删除数据吗？', function(r){
+			if (r){
+					$.ajax({
+						type:"delete",
+						url:"http://10.31.154.14:3000/con/data/"+id,
+						async:true
+						//data:{id:id}
+					}).done(function(res){
+						$("#"+ssid).datagrid('reload');
+					})
+			}
+		});
+		}
+
+		function editData11(id){
+			var ssid=$(this).parents('.easyui-fluid').eq(0).find('table').eq(4).attr('id');
+			var seajjj2=`<div class="easyui-panel" title="New Topic" style="width:580px">
+		                <div style="padding:10px 60px 20px 60px">
+							<form id="ff">
+								<div style="margin-bottom:20px">
+									title:<input class="easyui-textbox yilaingj8889" name="name" style="width:100%" data-options="label:'name:',required:true,validType:'name'">
+								</div>
+								<div style="margin-bottom:20px">
+									content:<textarea id="elem1" rows="10" name="content" class="xheditor{submitID:'save'} yilaingj889" style="width:100%" ></textarea>
+								</div>
+							</form>
+							<div style="text-align:center;padding:5px">
+								<a href="javascript:void(0)" class="easyui-linkbutton" id="yiliangjbut1">Submit</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+							</div>
+							</div>
+						</div>`; 
+					    $('#win').html(seajjj2);
+						$('#win').window({
+							width:600,
+							height:400,
+							modal:true
+						});
+						$('#elem1').xheditor({submitID:'save'});
+						$('#yiliangjbut1').click(function(){
+							$.ajax({
+								type:"put",
+								url:"http://10.31.154.14:3000/con/data/"+id,
+								async:true,
+								data:{
+									//id:id,
+									title:$('#ff .yilaingj8889').val(),
+									content:$('#ff .yilaingj8899').val()
+								}
+							}).done(function(data){
+								$('#'-ssid).datagrid('reload');
+								$('#win').window('close');
+							})
+						})
+					}
+
+		
+		function bbbbb222(z){
+					$('#'+z).datagrid({
+					singleSelect: false,
+					fit:true,
+					columns:[[
+							{field:'ck',title:'复选',checkbox:true},
+							{field:'title',title:'新闻标题',width:100},
+							{field:'content',title:'内容',width:200},
+							{field:'type',title:'评论',width:50},
+							{field:'operate',title:'操作', width:80,
+							formatter: function(value,row,index){
+								return "<a onclick=deleteData11('"+ row._id+"')>删除</a> <a onclick=editData11('"+ row._id+"')>修改</a>"
+							}
+						}
+					]]
+					});
+					var pager = $('#'+z).datagrid().datagrid('getPager');	// get the pager of datagrid
+					
+					pager.pagination({
+						buttons:[{
+							iconCls:'icon-search',
+							handler:function(){
+								var ssid=$(this).parents('.easyui-fluid').eq(0).find('table').eq(4).attr('id');
+								var seajjj1=`<div class="easyui-panel" title="New Topic" style="width:580px">
+		                <div style="padding:10px 60px 20px 60px">
+							<form id="ff">
+								<div style="margin-bottom:20px">
+									title:<input class="easyui-textbox" name="name" style="width:100%" data-options="label:'name:',required:true,validType:'name'">
+								</div>
+							</form>
+							<div style="text-align:center;padding:5px">
+								<a href="javascript:void(0)" class="easyui-linkbutton" id="yiliangjbut">Submit</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+							</div>
+							</div>
+						</div>`; 
+					    $('#win').html(seajjj1);
+						$('#win').window({
+							width:600,
+							height:400,
+							modal:true
+						});
+						$('#yiliangjbut').click(function(){
+							
+							$.ajax({
+								url:"http://10.31.154.14:3000/con/list",
+								type:"post",
+								data:{
+									title:$('#ff .easyui-textbox').val(),
+									cateId:ssid
+								}
+							}).done(function(data){
+								if(data.rows.length>0){
+									$('#'+z).datagrid('loadData',data);
+								}else if(data.rows.length===0){
+									alert('新闻不存在')
+								}
+								
+								$('#win').window('close');
+							})
+						})
+						
+					
+							}
+						},{
+							iconCls:'icon-add',
+							handler:function(){
+								var ssid=$(this).parents('.easyui-fluid').eq(0).find('table').eq(4).attr('id');
+								var seajjj=`<div class="easyui-panel" title="New Topic" style="width:580px">
+		                <div style="padding:10px 60px 20px 60px">
+							<form id="ff">
+								<div style="margin-bottom:20px">
+									title:<input class="easyui-textbox yilaingj888" name="name" style="width:100%" data-options="label:'name:',required:true,validType:'name'">
+								</div>
+								<div style="margin-bottom:20px">
+									content:<textarea id="elem1" rows="10" name="content" class="xheditor{submitID:'save'} yilaingj889" style="width:100%" ></textarea>
+								</div>
+							</form>
+							<div style="text-align:center;padding:5px">
+								<a href="javascript:void(0)" class="easyui-linkbutton" id="yiliangjbut">Submit</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+							</div>
+							</div>
+						</div>`; 
+						$('#win').html(seajjj);
+						$('#win').window({
+							width:600,
+							height:400,
+							modal:true
+						});
+						$('#elem1').xheditor({submitID:'save'});
+						$('#yiliangjbut').click(function(){
+							console.log($('#ff .easyui-textbox').val());
+							$.ajax({
+								url:"http://10.31.154.14:3000/con/data",
+								type:"post",
+								data:{
+									cateId:ssid,
+									title:$('#ff .yilaingj888').val(),
+									content:$('#ff .yilaingj889').val()
+								}
+							}).done(function(data){
+								console.log($('#'+z).datagrid('reload'))
+								$('#'+z).datagrid('reload');
+								$('#win').window('close');
+							})
+						})
+					
+							}
+						},{
+							iconCls:'icon-edit',
+							handler:function(){
+								alert('edit');
+							}
+						}]
+					});
+				};
+				function submitForm(){
+					$('#ff').form('submit');
+					$('#win').window('close');
+				}
+				function clearForm(){
+					$('#ff').form('clear');
+				} */
+	//})(jQuery);
+//用户管理模块  用户管理  用户管理  用户管理
+//(function(){
+
+	var	jjj111=`<table id="dg" title="用户信息" style="width:700px;height:350px"
+					data-options="rownumbers:true,singleSelect:true,pagination:true,url:'http://10.31.154.14:3000/users/list',method:'post'">
+			</table>`
+
+		
+    
+    //点击显示用户模块
+		$(function () {
+			$('.wu-side-tree a').bind('click', function () {
+				var title = $(this).text();
+				addTab(title);
+				$('#dg').datagrid().datagrid('reload'); 
+				bbbbb111();
+			})
+		});
+		//用户模块函数封装
+		function addTab(title) {
+			var content = jjj111;
+			var tabPanel = $("#tt1");
+			title = title.trim();
+			if (!tabPanel.tabs('exists', title)) {
+				tabPanel.tabs('add', {
+					title: title,
+					content: content,
+					fit: true,
+					closable: true
+				})
+			}else{
+				$('#tt1').tabs('select', title);
+		        var selTab = $('#tt1').tabs('getSelected');
+		        var url = $(selTab.panel('options').content).attr('src');     
+		        $('#tt1').tabs('update', {
+		            tab: selTab,
+		            options: {
+		                content:content
+		            }
+		        })
+			}
+			
+		};
+		//用户信息表  用户信息表  删除删除
+		function deleteData1(id){
+			//console.log("10.31.154.14:3000/users/data/" + id)
+			$.messager.confirm('确认删除', '你确认删除数据吗？', function(r){
+			if (r){
+					$.ajax({
+						type:"delete",
+						url:"http://10.31.154.14:3000/users/data/"+ id,
+						async:true,
+					}).done(function(res){
+						$("#dg").datagrid('reload');
+					})
+			}
+		});
+		}
+		//修改 修改 修改 修改
+		function editData(id){
+			var seajjj2=`<div class="easyui-panel" title="New Topic" style="width:580px">
+		                <div style="padding:10px 60px 20px 60px">
+							<form id="ff">
+								<div style="margin-bottom:20px">
+									name:<input class="easyui-textbox yilaingj8889" name="name" style="width:100%" data-options="label:'name:',required:true,validType:'name'">
+								</div>
+								<div style="margin-bottom:20px">
+									password:<input class="easyui-textbox yilaingj8899" name="password" style="width:100%" data-options="label:'Password:',required:true,validType:'password'">
+								</div>
+							</form>
+							<div style="text-align:center;padding:5px">
+								<a href="javascript:void(0)" class="easyui-linkbutton" id="yiliangjbut1">Submit</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+							</div>
+							</div>
+						</div>`; 
+					    $('#win').html(seajjj2);
+						$('#win').window({
+							width:600,
+							height:400,
+							modal:true
+						});
+						$('#yiliangjbut1').click(function(){
+							$.ajax({
+								type:"put",
+								url:"http://10.31.154.14:3000/users/data/"+id,
+								async:true,
+								data:{
+									//id:id,
+									name:$('#ff .yilaingj8889').val(),
+									password:$('#ff .yilaingj8899').val()
+								}
+							}).done(function(data){
+								$('#dg').datagrid('reload');
+								$('#win').window('close');
+							})
+						})
+
+			/* $.ajax({
+				type:"put",
+				url:"http://10.31.154.14:3000/users/data",
+				async:true,
+				data:{
+					id:id,
+					name:666,
+					password:666
+				}
+			}).done(function(res){
+				$("#dg").datagrid('reload');
+			}) */
+		}
+		function bbbbb111(){
+			$('#dg').datagrid({
+		    fit:true,
+			singleSelect: false,
+			columns:[[
+		    		{field:'checkbox',title:'复选',checkbox:true},
+					{field:'name',title:'姓名',width:100},
+					{field:'password',title:'密码',width:200},
+					{field:'operate',title:'操作', width:80,
+					formatter: function(value,row,index){
+						return "<a onclick=deleteData1('"+ row._id+"')>删除</a> <a onclick=editData('"+ row._id+"')>修改</a>"
+					}
+				}
+			]]
+			});
+			var pager = $('#dg').datagrid().datagrid('getPager');	// get the pager of datagrid
+			
+			pager.pagination({
+				buttons:[{
+					iconCls:'icon-search',
+					handler:function(){
+						var seajjj1=`<div class="easyui-panel" title="New Topic" style="width:580px">
+		                <div style="padding:10px 60px 20px 60px">
+							<form id="ff">
+								<div style="margin-bottom:20px">
+									name:<input class="easyui-textbox" name="name" style="width:100%" data-options="label:'name:',required:true,validType:'name'">
+								</div>
+							</form>
+							<div style="text-align:center;padding:5px">
+								<a href="javascript:void(0)" class="easyui-linkbutton" id="yiliangjbut">Submit</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+							</div>
+							</div>
+						</div>`; 
+					    $('#win').html(seajjj1);
+						$('#win').window({
+							width:600,
+							height:400,
+							modal:true
+						});
+						$('#yiliangjbut').click(function(){
+							console.log($('#ff .easyui-textbox').val());
+							$.ajax({
+								url:"http://10.31.154.14:3000/users/list",
+								type:"post",
+								data:{
+									name:$('#ff .easyui-textbox').val()
+								}
+							}).done(function(data){
+								if(data.rows.length>0){
+									$('#dg').datagrid('loadData',data);
+								}else if(data.rows.length===0){
+									alert('用户不存在')
+								}
+								
+								$('#win').window('close');
+							})
+						})
+						
+					}
+				},{
+					iconCls:'icon-add',
+					handler:function(){
+						/* var seajjj=`<div class="easyui-panel" title="New Topic" style="width:580px">
+		                <div style="padding:10px 60px 20px 60px">
+							<form id="ff" method="post" action="http://10.31.154.14:3000/users/data">
+								<div style="margin-bottom:20px">
+									name:<input class="easyui-textbox" name="name" style="width:100%" data-options="label:'Name:',required:true">
+								</div>
+								<div style="margin-bottom:20px">
+									password:<input class="easyui-textbox" name="password" style="width:100%" data-options="label:'Password:',required:true,validType:'password'">
+								</div>
+							</form>
+							<div style="text-align:center;padding:5px">
+								<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+							</div>
+							</div>
+						</div>`;  */
+						var seajjj=`<div class="easyui-panel" title="New Topic" style="width:580px">
+		                <div style="padding:10px 60px 20px 60px">
+							<form id="ff">
+								<div style="margin-bottom:20px">
+									name:<input class="easyui-textbox yilaingj888" name="name" style="width:100%" data-options="label:'name:',required:true,validType:'name'">
+								</div>
+								<div style="margin-bottom:20px">
+									password:<input class="easyui-textbox yilaingj889" name="password" style="width:100%" data-options="label:'Password:',required:true,validType:'password'">
+								</div>
+							</form>
+							<div style="text-align:center;padding:5px">
+								<a href="javascript:void(0)" class="easyui-linkbutton" id="yiliangjbut">Submit</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+							</div>
+							</div>
+						</div>`; 
+					    $('#win').html(seajjj);
+						$('#win').window({
+							width:600,
+							height:400,
+							modal:true
+						});
+						$('#yiliangjbut').click(function(){
+							$.ajax({
+								url:"http://10.31.154.14:3000/users/data",
+								type:"post",
+								data:{
+									name:$('#ff .yilaingj888').val(),
+									password:$('#ff .yilaingj889').val()
+								}
+							}).done(function(data){
+								$('#dg').datagrid('reload');
+								$('#win').window('close');
+							})
+						})
+					}
+				},{
+					iconCls:'icon-remove',
+					handler:function(){
+						var diarr=$('#dg').datagrid('getChecked');
+						var dataidarr=[];
+						$.each(diarr,function(i,v){
+							dataidarr.push(v._id);
+						});
+						$.messager.confirm('确认删除', '你确认删除数据吗？', function(r){
+								$.ajax({
+								type:'post',
+								url:'http://10.31.154.14:3000/users/all',
+								data:{
+									id:dataidarr.toString()
+								}	
+							}).done(function(data){
+								$('#dg').datagrid('reload');
+							})
+						});
+						// $('#win').window({
+						// 	width:600,
+						// 	height:400,
+						// 	modal:true
+						// });
+					}
+				}]
+			});			
+		}
+        function submitForm(){
+			$('#ff').form('submit');
+			$('#win').window('close');
+		}
+		function clearForm(){
+			$('#ff').form('clear');
+		}
+		
+   //})();
+   //用户模块 用户模块  用户模块 
+   $(function () {
+		$('.wu-side-tree11 a').bind('click', function () {
+			var title = $(this).text();
+			var url = $(this).attr('data-link');
+			addTab3(title, url);
+		})
+	});
+
+	function addTab3(title,hee) {
+		var content =  '<iframe style="width:100%;height:100%" frameborder="0" src="' + hee + '"></iframe>';
+		var tabPanel = $("#tt1");
+		title = title.trim();
+		if (!tabPanel.tabs('exists', title)) {
+			tabPanel.tabs('add', {
+				title: title,
+				content: content,
+				fit: true,
+				closable: true
+			})
+		}else{
+			$('#tt1').tabs('select', title);
+			var selTab = $('#tt1').tabs('getSelected');
+			var url = $(selTab.panel('options').content).attr('src');     
+			$('#tt1').tabs('update', {
+				tab: selTab,
+				options: {
+					content:content
+				}
+			})
+		}
+	};
+	//分类管理  分类管理 
+	$(function () {
+		$('.wu-side-tree111 a').bind('click', function () {
+			var title = $(this).text();
+			var url = $(this).attr('data-link');
+			addTab3(title, url);
+		})
+	});
+	//新闻新闻
+	$(function () {
+		$('.wu-side-tree1111 a').bind('click', function () {
+			var title = $(this).text();
+			var url = $(this).attr('data-link');
+			addTab3(title, url);
+		})
+	});
+	
+    </script>
+</body>
+</html>
